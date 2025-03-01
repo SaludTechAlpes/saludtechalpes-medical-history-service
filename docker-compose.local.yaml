@@ -1,0 +1,14 @@
+services:
+  medical-history-service:
+    build:
+      context: .
+      dockerfile: local.Dockerfile
+    container_name: saludtechalpes-medical-history-local-service
+    restart: always
+    volumes:
+      - ".:/app"
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env.local
+    tty: true
