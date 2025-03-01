@@ -54,8 +54,7 @@ $ docker compose -f=docker-compose.local.yaml up --build
 ```bash
 $ docker ps
 ```
-<img width="1386" alt="saludtech-alpes-data-processor-service-running" src="https://github.com/user-attachments/assets/30eed111-9eab-47cb-937a-981cd19c1322" />
-
+<img width="1389" alt="Screenshot 2025-02-28 at 11 04 05 PM" src="https://github.com/user-attachments/assets/25f7c8aa-a53b-4d5d-b54b-f3087777f96f" />
 
 4. Execute the **health** api rest with cUrl or you could use postman 👩🏻‍🚀 in order to validate the health 💚
 
