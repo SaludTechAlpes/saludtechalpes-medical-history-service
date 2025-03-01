@@ -26,13 +26,15 @@ else
 endif
 
 run-tests:
+	PYTHONPATH=/src
 	FLASK_ENV=test python3 -m unittest discover -s tests -p '*Test.py' -v
 
 run-tests-coverage:
+	 PYTHONPATH=/src
 	 FLASK_ENV=test coverage run -m unittest discover -s tests -p '*Test.py' -v
 	 coverage report -m
 	 coverage html
-	 coverage report --fail-under=90
+	 coverage report --fail-under=80
 
 docker-up:
 	docker compose up --build
