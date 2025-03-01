@@ -3,7 +3,7 @@ activate:
         echo "Python 🐍 environment was activated"; \
     else \
         echo "The folder environment doesn't exist"; \
-		python -m venv venv; \
+		python3 -m venv venv; \
         echo "The environment folder was created and the python 🐍 environment was activated"; \
     fi
 	. ./venv/bin/activate
@@ -26,13 +26,13 @@ else
 endif
 
 run-tests:
-	FLASK_ENV=test python -m unittest discover -s tests -p '*Test.py' -v
+	FLASK_ENV=test python3 -m unittest discover -s tests -p '*Test.py' -v
 
 run-tests-coverage:
 	 FLASK_ENV=test coverage run -m unittest discover -s tests -p '*Test.py' -v
 	 coverage report -m
 	 coverage html
-	 coverage report --fail-under=50
+	 coverage report --fail-under=90
 
 docker-up:
 	docker compose up --build
