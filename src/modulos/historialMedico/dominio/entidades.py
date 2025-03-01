@@ -2,8 +2,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import uuid
 
-from src.seedwork.dominio.entidades import AgregacionRaiz, Entidad
-import src.modulos.historialMedico.dominio as ov
+from ....seedwork.dominio.entidades import AgregacionRaiz, Entidad
+from . import objetos_valor as ov
 
 @dataclass
 class HistorialMedico(AgregacionRaiz):
