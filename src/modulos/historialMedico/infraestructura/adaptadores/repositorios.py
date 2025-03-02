@@ -11,7 +11,9 @@ class HistorialMedicoPostgresRepositorio(HistorialMedicoRepositorio):
         self.mapeador = HistorialMedicoMapeador()
     
     def obtener_por_id(self, id:UUID)-> HistorialMedico:
-        historial_medico_dto = self.session.query(HistorialMedicoDTO).filter_by(id == str(id)).one_or_none()
+        historial_medico_dto = self.session.query(HistorialMedicoDTO).filter_by(id=str(id)).one_or_none()
+        print("historial_medico_dto")
+        print(id)
         if not historial_medico_dto:
             return None
         return self.mapeador.dto_a_entidad(historial_medico_dto)
@@ -23,8 +25,8 @@ class HistorialMedicoPostgresRepositorio(HistorialMedicoRepositorio):
     def agregar(self, historial_medico: HistorialMedico):
         historial_medico_dto = self.mapeador.entidad_a_dto(historial_medico)
 
-        if historial_medico_dto.paciencia:
-            self.session.add(historial_medico_dto.paciencia)
+        if historial_medico_dto.paciente:
+            self.session.add(historial_medico_dto.paciente)
 
         if historial_medico_dto.diagnostico:
             self.session.add(historial_medico_dto.diagnostico)

@@ -9,7 +9,7 @@ FLASK_ENV = os.getenv("FLASK_ENV", "development")
 
 if FLASK_ENV == "test":
     DATABASE_URL = "sqlite:///:memory:"  # Base de datos en memoria para tests
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(DATABASE_URL, echo=True)
 else:
     DATABASE_URL = f"postgresql://{config.DB_USER}:{config.DB_PASSWORD}@{config.DB_HOST}:{config.DB_PORT}/{config.DB_NAME}"
     engine = create_engine(DATABASE_URL, pool_size=10, max_overflow=20)
@@ -17,6 +17,8 @@ else:
 SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
 Base = declarative_base()
+
+Base.metadata.create_all(bind=engine)
 
 def get_db():
     db = SessionLocal()

@@ -23,18 +23,18 @@ class HistorialMedicoDTO(Base):
         paciente_id = Column(UUID(as_uuid=True), ForeignKey("paciente.id", ondelete="SET NULL"), nullable=True)
         diagnostico_id = Column(UUID(as_uuid=True), ForeignKey("diagnostico.id", ondelete="SET NULL"), nullable=True)
     
-    paciencia = relationship("PacienteDTO", back_populates="historial_medico")
+    paciente = relationship("PacienteDTO", back_populates="historial_medico")
     diagnostico = relationship("DiagnosticoDTO", back_populates="historial_medico")
 
 class PacienteDTO(Base):
     __tablename__ = "paciente"
-
     if os.getenv("FLASK_ENV") == "test":
         id = Column(String, primary_key=True, default=get_uuid)
     else:
         id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    
+
     token = Column(String, nullable=False)
+
     grupo_etario = Column(String, nullable=False)
     genero = Column(String, nullable=False)
     etnia = Column(String, nullable=False)
