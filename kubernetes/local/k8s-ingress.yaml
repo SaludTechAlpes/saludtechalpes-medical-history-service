@@ -1,0 +1,28 @@
+###################################
+# INGRESS
+###################################
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: saludtechalpes-medical-history-service-ingress
+  labels:
+    name:  saludtechalpes-medical-history-service-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: saludtechalpes-medical-history-service
+            port: 
+              number: 5002
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: saludtechalpes-medical-history-service
+            port: 
+              number: 5002

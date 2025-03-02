@@ -1,0 +1,82 @@
+###################################
+# saludtechalpes-medical-history-service
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saludtechalpes-medical-history-service
+  labels:
+    app: saludtechalpes-medical-history-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: saludtechalpes-medical-history-service
+  template:
+    metadata:
+      labels:
+        app: saludtechalpes-medical-history-service
+    spec:
+      containers:
+        - name: saludtechalpes-medical-history-service
+          image: caprilespe/saludtechalpes-medical-history-service:0.0.1
+          env:
+            - name: "FLASK_ENV"
+              valueFrom:
+                configMapKeyRef:
+                  name: medical-history-configmap
+                  key: FLASK_ENV
+            - name: "APP_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: medical-history-configmap
+                  key: APP_NAME
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: medical-history-secrets
+                  key: DB_USER
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: medical-history-secrets
+                  key: DB_PASSWORD
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: medical-history-secrets
+                  key: DB_NAME
+            - name: "DB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: medical-history-secrets
+                  key: DB_PORT
+            - name: "DB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: medical-history-secrets
+                  key: DB_HOST
+          ports:
+            - containerPort: 3002
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "500m"
+            limits:
+              memory: "256Mi"
+              cpu: "1024m"
+          imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: saludtechalpes-medical-history-service-network
+spec:
+  type: LoadBalancer
+  selector:
+    app: saludtechalpes-medical-history-service
+  ports:
+    - protocol: TCP
+      port: 5002
+      targetPort: 3002

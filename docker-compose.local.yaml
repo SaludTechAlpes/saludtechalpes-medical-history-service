@@ -1,0 +1,38 @@
+services:
+  medical-history-service:
+    build:
+      context: .
+      dockerfile: local.Dockerfile
+    container_name: saludtechalpes-medical-history-local-service
+    restart: always
+    volumes:
+      - ".:/app"
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env.local
+    tty: true
+    depends_on:
+      db:
+        condition: service_started
+    networks:
+      - db_net
+
+  db:
+    image: postgres:14
+    container_name: postgres-local-db
+    restart: always
+    env_file:
+      - .env.db
+    networks:
+      - db_net
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+networks:
+  db_net:
+    driver: bridge
+volumes:
+  db-data:
+    driver: local

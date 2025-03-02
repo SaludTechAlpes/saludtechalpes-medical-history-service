@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: medical-history-configmap
+data:
+  FLASK_ENV: "staging"
+  APP_NAME: "saludtechalpes-medical-history-service"
