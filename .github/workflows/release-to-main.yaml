@@ -89,8 +89,7 @@ jobs:
           DB_PORT=${{ secrets.DB_PORT }}
           DB_HOST=${{ secrets.DB_HOST }}
           sed "s/{{IMAGE_TAG}}/build-${GITHUB_RUN_NUMBER}/g" ./kubernetes/staging/k8s-deployment.tmpl > kubernetes/staging/k8s-deployment.yaml
-          sed -e "s|{{PHRASE_KEY}}|${PHRASE_KEY}|g" \
-          -e "s|{{DB_USER}}|${DB_USER}|g" \
+          sed -e "s|{{DB_USER}}|${DB_USER}|g" \
           -e "s|{{DB_PASSWORD}}|${DB_PASSWORD}|g" \
           -e "s|{{DB_NAME}}|${DB_NAME}|g" \
           -e "s|{{DB_PORT}}|${DB_PORT}|g" \
