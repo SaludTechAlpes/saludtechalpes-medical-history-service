@@ -22,7 +22,7 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-EXPOSE 5000
+EXPOSE 3002
 
 COPY ./docker/start.sh /start.sh
 RUN chmod +x /start.sh
