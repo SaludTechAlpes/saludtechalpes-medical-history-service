@@ -14,3 +14,8 @@ class Config:
 
         self.ENVIRONMENT = environment
         self.APP_NAME = os.getenv('APP_NAME', 'saludtechalpes-medical-history-service')
+        self.DB_HOST = os.getenv('DB_HOST', 'db')
+        self.DB_PORT = os.getenv('DB_PORT', '5432')
+        self.DB_USER = os.getenv('DB_USER', 'admin')
+        self.DB_PASSWORD = os.getenv('DB_PASSWORD', 'admin')
+        self.DB_NAME = os.getenv('DB_NAME', 'saludtechalpes')
