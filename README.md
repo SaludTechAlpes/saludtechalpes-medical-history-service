@@ -1,7 +1,108 @@
-# Description
-This is a python 🐍 flask 🌶️ service to record the medical history 🩺📋
+# SaludTech Alpes - Medical History Service
+Este repositorio contiene el servicio de historial medico para el proyecto **SaludTech Alpes**. Este servicio implementa una arquitectura basada en **eventos y comandos**, utilizando **CQRS** y separación de responsabilidades para garantizar modularidad y escalabilidad.
 
 ![Github](https://github.com/SaludTechAlpes/saludtechalpes-medical-history-service/actions/workflows/action.yaml/badge.svg)
+![Github](https://github.com/SaludTechAlpes/saludtechalpes-medical-history-service/actions/workflows/merge-to-develop.yaml/badge.svg)
+![Github](https://github.com/SaludTechAlpes/saludtechalpes-medical-history-service/actions/workflows/release-to-main.yaml/badge.svg)
+
+## 📂 Estructura del Proyecto
+
+El proyecto sigue una estructura modular organizada por capas de **Dominio, Aplicación e Infraestructura**, siguiendo los principios de **Domain-Driven Design (DDD)**. A continuación, se describe cada parte:
+
+### **1.** **`src/config`**
+
+Contiene la configuración del proyecto:
+
+- `config.py`: Configuraciones generales de la aplicación.
+- `db.py`: Configuración de la base de datos y conexión.
+
+### **2.** **`src/modulos`**
+
+Aquí se encuentran los módulos principales del sistema.
+
+#### **2.1 `historialMedico`**
+
+Este módulo se encarga de recibir eventos de información de los data frames para extraer la data del paciente y almacenarlos en la base de datos
+
+- **`aplicacion`**: Contiene la lógica de aplicación y los servicios encargados de coordinar procesos de negocio.
+- **`dominio`**: Define las entidades, reglas de negocio, eventos de dominio y puertos.
+- **`infraestructura`**: Implementaciones concretas de los puertos, repositorios, adaptadores y consumidores de eventos.
+- **`eventos.py`**: Define los eventos de dominio relacionados con la anonimización de datos.
+- **`comandos.py`**: Define los comandos ejecutados dentro del proceso de anonimización.
+
+### **3. `src/seedwork`**
+
+Este módulo contiene código reutilizable para todas las aplicaciones dentro del sistema.
+
+- **`aplicacion`**: Define servicios genéricos, comandos y handlers.
+- **`dominio`**: Contiene las abstracciones de entidades, eventos, objetos de valor, reglas de negocio y repositorios.
+- **`infraestructura`**: Define implementaciones genéricas de consumidores de eventos, repositorios y en general puertos.
+
+## 🔄 **Flujo de Trabajo del Sistema**
+
+El sistema sigue un flujo basado en **eventos y comandos**:
+
+1. **Consumo evento dataframe**: El servicio data transformation, envia evento con datos de dataframe con la ruta de acceso para obtener metadatos del paciente.
+2. **Se consulta la ruta**: Se ejecuta capa de aplicación y se obtienen extraen los datos del paciente y se almacenan en la base de datos
+
+## 🚀 **Cómo Ejecutar la Aplicación**
+
+### **1. Configuración previa (si no se usa Gitpod)**
+
+Si no estás utilizando Gitpod, es necesario ejecutar los siguientes comandos antes de iniciar la aplicación para el correcto funcionamiento de Pulsar:
+
+```bash
+mkdir -p data/bookkeeper && mkdir -p data/zookeeper && sudo chmod -R 777 ./data
+```
+
+### **2. Desplegar con Docker Compose**
+
+```bash
+make docker-up
+```
+O si no tiene instalado make
+
+```bash
+docker-compose up --build
+```
+
+### **3. En caso de errores con Bookkeeper o Zookeeper**
+
+Si los contenedores de **Bookkeeper** o **Zookeeper** fallan o se reinician constantemente, sigue estos pasos:
+
+```bash
+docker-compose down -v
+rm -rf data
+mkdir -p data/bookkeeper && mkdir -p data/zookeeper && sudo chmod -R 777 ./data
+make docker-up
+```
+
+## 🛠 **Endpoints de la API**
+
+### **1. Verificar estado del servicio**
+
+**Endpoint:** `GET /health`
+
+**Descripción:** Retorna el estado de la aplicación.
+
+**Ejemplo de solicitud con curl:**
+
+```bash
+curl -X GET http://localhost:5000/health
+```
+
+**Respuesta:**
+
+```json
+{
+  "status": "up",
+  "application_name": "SaludTech Alpes",
+  "environment": "development"
+}
+```
+
+# Description
+This is a python 🐍 flask 🌶️ service to record the medical history 🩺📋
 
 # Made with
 [![Python](https://img.shields.io/badge/python-2b5b84?style=for-the-badge&logo=python&logoColor=white&labelColor=000000)]()
