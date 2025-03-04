@@ -19,3 +19,6 @@ class Config:
         self.DB_USER = os.getenv('DB_USER')
         self.DB_PASSWORD = os.getenv('DB_PASSWORD')
         self.DB_NAME = os.getenv('DB_NAME')
+        self.BROKER_HOST = os.getenv('BROKER_HOST')
+        self.BROKER_PORT = os.getenv('BROKER_PORT')
+        self.PULSAR_HOST = os.getenv('PULSAR_HOST')
