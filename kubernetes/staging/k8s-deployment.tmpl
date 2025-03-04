@@ -58,7 +58,7 @@ spec:
                   key: DB_HOST
 
           ports:
-            - containerPort: 3002
+            - containerPort: 5000
           resources:
             requests:
               memory: "128Mi"
@@ -79,5 +79,5 @@ spec:
     app: saludtechalpes-medical-history-service
   ports:
     - protocol: TCP
-      port: 5002
-      targetPort: 3002
+      port: 5003
+      targetPort: 5000
