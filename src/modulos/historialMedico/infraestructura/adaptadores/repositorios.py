@@ -12,8 +12,6 @@ class HistorialMedicoPostgresRepositorio(HistorialMedicoRepositorio):
     
     def obtener_por_id(self, id:UUID)-> HistorialMedico:
         historial_medico_dto = self.session.query(HistorialMedicoDTO).filter_by(id=str(id)).one_or_none()
-        print("historial_medico_dto")
-        print(id)
         if not historial_medico_dto:
             return None
         return self.mapeador.dto_a_entidad(historial_medico_dto)

@@ -1,10 +1,18 @@
-from src.seedwork.infraestructura.consumidor_pulsar import ConsumidorPulsar
-from src.modulos.historialMedico.infraestructura.schema.v1.eventos import DataFramesGeneradosPayload
-from src.modulos.historialMedico.dominio.puertos.procesarEventoModelos import PuertoEventoModelos
-import pulsar
 import logging
-from src.config.config import Config
 
+import pulsar
+
+from src.config.config import Config
+from src.modulos.historialMedico.dominio.comandos import HistorialMedicoComando
+from src.modulos.historialMedico.dominio.eventos import DataFramesGeneradosEvento
+from src.modulos.historialMedico.dominio.puertos.procesar_comando_historial_medico import (
+    PuertoProcesarComandoHistorialMedico,
+)
+from src.modulos.historialMedico.infraestructura.despachadores import Despachador
+from src.modulos.historialMedico.infraestructura.schema.v1.comandos import (
+    ComandoHistorialMedico,
+)
+from src.seedwork.infraestructura.consumidor_pulsar import ConsumidorPulsar
 
 config = Config()
 
@@ -12,16 +20,44 @@ config = Config()
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+
 class ConsumidorEventoDataFramesGenerados(ConsumidorPulsar):
-    def __init__(self, puerto_modelos: PuertoEventoModelos):
-        cliente = pulsar.Client(f'pulsar://{config.BROKER_HOST}:{config.BROKER_PORT}')
-        super().__init__(cliente, "dataframes-generados", "modelos-ia-sub-comandos", DataFramesGeneradosPayload)
-        self.puerto_modelos = puerto_modelos
+    despachador = Despachador()
+
+    def __init__(self):
+        cliente = pulsar.Client(
+            f"{config.PULSAR_HOST}://{config.BROKER_HOST}:{config.BROKER_PORT}"
+        )
+        super().__init__(
+            cliente,
+            "dataframes-generados",
+            "saludtech-sub-eventos",
+            DataFramesGeneradosEvento,
+        )
 
     def procesar_mensaje(self, data):
-        self.puerto_modelos.procesar_evento_dataframes_generado(
-            id=data.id,
-            cluster_id=data.cluster_id,
-            ruta_archivo_parquet=data.ruta_archivo_parquet,
-            fecha_generacion=data.fecha_generacion
+        comando_historial = HistorialMedicoComando()
+        self.despachador.publicar_comando(comando_historial, "crear-historial-medico")
+
+
+class ConsumidorComandosHistorialMedico(ConsumidorPulsar):
+    """
+    Consumidor de comandos de historial medico que usa Pulsar.
+    """
+
+    def __init__(self, puerto_mapeo: PuertoProcesarComandoHistorialMedico):
+        cliente = pulsar.Client(
+            f"{config.PULSAR_HOST}://{config.BROKER_HOST}:{config.BROKER_PORT}"
+        )
+        super().__init__(
+            cliente,
+            "crear-historial-medico",
+            "saludtech-sub-comandos",
+            ComandoHistorialMedico,
+        )
+        self.puerto_mapeo = puerto_mapeo
+
+    def procesar_mensaje(self, data):
+        self.puerto_mapeo.procesar_comando_historial_medico(
+            id_imagen=data.id_imagen,
         )
