@@ -10,3 +10,4 @@ import src.modulos.historialMedico.dominio.objetos_valor as ov
 @dataclass
 class HistorialMedicoComando:
     id_imagen: Optional[uuid.UUID] = None
+    paciente: str = ''
