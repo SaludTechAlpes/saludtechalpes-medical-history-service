@@ -18,11 +18,11 @@ spec:
           service:
             name: saludtechalpes-medical-history-service
             port: 
-              number: 5002
+              number: 5003
       - pathType: Prefix
         path: /
         backend:
           service:
             name: saludtechalpes-medical-history-service
             port: 
-              number: 5002
+              number: 5003
