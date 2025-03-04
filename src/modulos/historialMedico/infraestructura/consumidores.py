@@ -4,7 +4,7 @@ import pulsar
 
 from src.config.config import Config
 from src.modulos.historialMedico.dominio.comandos import HistorialMedicoComando
-from src.modulos.historialMedico.dominio.eventos import DataFramesGeneradosEvento
+from src.modulos.historialMedico.infraestructura.schema.v1.eventos import EventoDataFramesGenerados
 from src.modulos.historialMedico.dominio.puertos.procesar_comando_historial_medico import (
     PuertoProcesarComandoHistorialMedico,
 )
@@ -32,7 +32,7 @@ class ConsumidorEventoDataFramesGenerados(ConsumidorPulsar):
             cliente,
             "dataframes-generados",
             "saludtech-sub-eventos",
-            DataFramesGeneradosEvento,
+            EventoDataFramesGenerados,
         )
 
     def procesar_mensaje(self, data):
