@@ -57,6 +57,7 @@ def comenzar_consumidor():
     threading.Thread(
         target=consumidor_comandos_historial_medico.suscribirse, daemon=True
     ).start()
+    return servicio_historiales_medicos
 
 
 def create_app(configuration=None):
@@ -67,7 +68,7 @@ def create_app(configuration=None):
             app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
         Base.metadata.create_all(engine)
 
-    comenzar_consumidor()
+    servicio_historiales_medicos = comenzar_consumidor()
     despachador_generacion_dataframes = DespachadorDataframes()
 
     @app.route("/health")
@@ -77,6 +78,14 @@ def create_app(configuration=None):
             "application_name": config.APP_NAME,
             "environment": config.ENVIRONMENT,
         }
+
+    @app.route("/historial-medico", methods=["GET"])
+    def historial_medico():
+        if not servicio_historiales_medicos:
+            return jsonify({"error": "Servicio no inicializado"}), 500
+        historiales_medicos = servicio_historiales_medicos.traer_historiales_medicos()
+        print(historiales_medicos)
+        return jsonify(historiales_medicos), 200
 
     @app.route("/simular-dataframes-generados", methods=["GET"])
     def simular_dataframes_generados():

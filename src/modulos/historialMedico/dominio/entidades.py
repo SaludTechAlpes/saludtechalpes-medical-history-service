@@ -7,6 +7,7 @@ from . import objetos_valor as ov
 
 @dataclass
 class HistorialMedico(AgregacionRaiz):
+    _id: uuid.UUID = field(default=None)
     id: uuid.UUID = field(default=None)
     paciente: Paciente = field(default_factory=lambda: Paciente(
         grupoEtario=ov.GrupoEtario.ADULTO,
@@ -21,6 +22,7 @@ class HistorialMedico(AgregacionRaiz):
 
 @dataclass
 class Paciente(Entidad):
+    _id: uuid.UUID = field(default=None)
     id: uuid.UUID = field(default=None)
     token: str = ''
     grupoEtario: ov.GrupoEtario = ov.GrupoEtario.ADULTO
@@ -33,6 +35,7 @@ class Paciente(Entidad):
 
 @dataclass
 class Diagnostico(Entidad):
+    _id: uuid.UUID = field(default=None)
     id: uuid.UUID = field(default=None)
     descripcion: str = ''
     entornoClinico: str = ''

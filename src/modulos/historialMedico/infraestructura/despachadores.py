@@ -6,7 +6,7 @@ from pulsar.schema import AvroSchema
 
 from src.config.config import Config
 from src.modulos.historialMedico.infraestructura.schema.v1.comandos import ComandoHistorialMedico, ComandoHistorialMedicoPayload
-from src.modulos.historialMedico.infraestructura.schema.v1.eventos import DataFramesGeneradosPayload, EventoDataFramesGenerados
+from src.modulos.historialMedico.infraestructura.schema.v1.eventos import EventoHistorialMedicoAlmacenado, HistorialMedicoAlmacenadoPayload
 from src.seedwork.infraestructura import utils
 
 logging.basicConfig(level=logging.INFO)
@@ -35,13 +35,11 @@ class Despachador:
         self._publicar_mensaje(evento_gordo, topico, ComandoHistorialMedico)
 
     def publicar_evento(self, evento, topico):
-        payload = DataFramesGeneradosPayload(
-            cluster_id = evento.cluster_id,
-            ruta_archivo_parquet = evento.ruta_archivo_parquet,
-            fecha_generacion = evento.fecha_generacion
+        payload = HistorialMedicoAlmacenadoPayload(
+            id_historial_medico = evento.id_historial_medico
         )
-        evento_gordo = EventoDataFramesGenerados(data=payload)
-        self._publicar_mensaje(evento_gordo, topico, EventoDataFramesGenerados)
+        evento_gordo = EventoHistorialMedicoAlmacenado(data=payload)
+        self._publicar_mensaje(evento_gordo, topico, EventoHistorialMedicoAlmacenado)
 
 
     def cerrar(self):

@@ -1,9 +1,12 @@
+import logging
 from uuid import UUID
 from src.modulos.historialMedico.dominio.puertos.repositorios import HistorialMedicoRepositorio
 from src.modulos.historialMedico.dominio.entidades import HistorialMedico
 from src.modulos.historialMedico.infraestructura.dto import HistorialMedicoDTO
 from src.modulos.historialMedico.infraestructura.mapeadores import HistorialMedicoMapeador
 from src.config.db import get_db
+
+logger = logging.getLogger(__name__)
 
 class HistorialMedicoPostgresRepositorio(HistorialMedicoRepositorio):
     def __init__(self):
@@ -18,6 +21,7 @@ class HistorialMedicoPostgresRepositorio(HistorialMedicoRepositorio):
     
     def obtener_todos(self) -> list[HistorialMedico]:
         historial_medico_dto = self.session.query(HistorialMedicoDTO).all()
+        logger.info(f"👉 Historial Medico obtenidos: {historial_medico_dto}")
         return [self.mapeador.dto_a_entidad(historial_medico) for historial_medico in historial_medico_dto]
     
     def agregar(self, historial_medico: HistorialMedico):
