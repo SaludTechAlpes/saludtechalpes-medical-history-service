@@ -8,3 +8,9 @@ class DataFramesGeneradosPayload(Record):
 
 class EventoDataFramesGenerados(EventoIntegracion):
     data = DataFramesGeneradosPayload()
+
+class HistorialMedicoAlmacenadoPayload(Record):
+    id_historial_medico = String()
+
+class EventoHistorialMedicoAlmacenado(EventoIntegracion):
+    data = HistorialMedicoAlmacenadoPayload()
