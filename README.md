@@ -186,3 +186,4 @@ $ source run.sh; docker_local_down
 
 $ docker compose -f=docker-compose.local.yaml down
 ```
+
