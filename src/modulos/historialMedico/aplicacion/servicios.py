@@ -37,6 +37,9 @@ class ServicioAplicacionHistorialMedico(PuertoProcesarComandoHistorialMedico):
         self.servicio_dominio = ServicioDominioHistorialMedico()
         self.despachador = Despachador()
 
+    def traer_historiales_medicos(self):
+        return self.repositorio_historial_medico.obtener_todos()
+
     def procesar_comando_historial_medico(self, id_imagen: uuid.UUID):
         try:
             self.servicio_dominio.validar_imagen(id_imagen=str(id_imagen))
